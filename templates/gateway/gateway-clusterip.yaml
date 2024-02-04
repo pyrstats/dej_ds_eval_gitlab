@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.gwclusterip1.name }}
+  labels:
+   app: {{ .Values.labelsapp }}
+   role: clusterIP
+  annotations:
+   description: "This clusterIP connects the pod gateway to the network"
+spec:
+  selector:
+    name: {{ .Values.gwclusterip1.podselector }}
+  type: ClusterIP
+  ports:
+  - name: {{ .Values.gwclusterip1.portname }}
+    protocol: {{ .Values.gwclusterip1.protocol }}
+    port: {{ .Values.gwclusterip1.port }}
+    targetPort: {{ .Values.gwclusterip1.targetport }}
+
+

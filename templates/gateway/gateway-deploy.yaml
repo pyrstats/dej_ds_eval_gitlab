@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deploygw1.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.labelsapp }}
+    role: deployment 
+    name: {{ .Values.deploygw1.name }}
+spec:
+  replicas: {{ .Values.deploygw1.replicas }}
+  selector:
+    matchLabels:
+      name: {{ .Values.deploygw1.podselector }}
+  template:
+    metadata:
+      name: {{ .Values.deploygw1.podselector }}
+      namespace: {{ .Values.namespace }}
+      labels:
+        name: {{ .Values.deploygw1.podselector }}
+        app: {{ .Values.labelsapp }}
+        role: Pod
+    spec:
+      containers:
+      - name: {{ .Values.deploygw1.containername }}
+        image: {{ .Values.deploygw1.image }}
+        imagePullPolicy: {{ .Values.deploygw1.imagePullPolicy }} 
+        command: {{ .Values.deploygw1.containercommand }} 
+        ports:
+        - containerPort: {{ .Values.deploygw1.containerport }}
+        env: 
+{{ toYaml .Values.deploygw1.env | indent 12 }}        

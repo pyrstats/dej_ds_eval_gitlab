@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+data:
+  {{- $urlprefx := .Values.namespace }}
+metadata:
+  name: {{ .Values.ingressgw1.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+   app: {{ .Values.labelsapp }}
+   role: Ingress
+   name: {{ .Values.ingressgw1.name }}
+  annotations:
+   description: "This Ingress allows to access the application gateway from internet "
+spec:
+  ingressClassName: traefik
+  rules:
+  {{- range .Values.ingressgw1.hosts }}
+  - host: {{ printf "%s.%s" $urlprefx  .host }}
+  {{- end }}
+    http:
+        paths:
+          - path: / 
+            pathType: Prefix
+            backend:
+             service:
+              name: cuip-gw1
+              port:
+                number: 80

@@ -1,0 +1,77 @@
+# Default values for eval_gitlab_gateway_chart_helm.
+labelsapp: "gitlab-eval"
+namespace: ""
+## @param deployement ingress 
+ingressgw1:
+  name: "ingressgw1"
+  port: 80
+  annotations: 
+   description: "This Ingress allows to access the application gateway from internet"
+  hosts:
+    - host: "gw.rianer.cloudns.ph" 
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+## @param ClusterIP gateway 
+gwclusterip1:
+  name: "cuip-gw1"
+  podselector: "pod-gw1"
+  protocol: "TCP" 
+  portname: "cuip-gw1-port80" 
+  port: 80 
+  targetport: 8000 
+## @param deployement gateway 
+deploygw1:
+  name: "deploygw1"
+  replicas: 1
+  podselector: "pod-gw1"
+  containername: "gw1-cont1"
+  containerport: 8000 
+  containercommand: '["sh", "-c", "uvicorn main:app --reload --host 0.0.0.0"]'
+  image: "pyrstatsdockerhub/eval_gitlab_gateway"
+  imagePullPolicy: "Always" 
+  env:
+    - name: PYTHONDONTWRITEBYTECODE
+      value: "1"
+    - name: PYTHONBUFFERED
+      value: "1"
+    - name: USERS_SERVICE_URL 
+      value: "http://users:8000"
+    - name: ORDERS_SERVICE_URL 
+      value: "http://orders:8000"
+## @param ClusterIP orders 
+ordersclusterip1:
+  name: "orders"
+  podselector: "pod-orders1"
+  protocol: "TCP" 
+  portname: "cuip-orders1-port8000" 
+  port: 8000 
+  targetport: 8000 
+## @param deployement orders 
+deployorders1:
+  name: "deployorders1"
+  replicas: 1
+  podselector: "pod-orders1"
+  containername: "orders1-cont1"
+  containerport: 8000 
+  containercommand: '["sh", "-c", "uvicorn main:app --reload --host 0.0.0.0"]'
+  image: "pyrstatsdockerhub/eval_gitlab_orders"
+  imagePullPolicy: "Always" 
+## @param ClusterIP users 
+usersclusterip1:
+  name: "users"
+  podselector: "pod-users1"
+  protocol: "TCP" 
+  portname: "cuip-users1-port8000" 
+  port: 8000 
+  targetport: 8000 
+## @param deployement users 
+deployusers1:
+  name: "deployusers1"
+  replicas: 1
+  podselector: "pod-users1"
+  containername: "users1-cont1"
+  containerport: 8000 
+  containercommand: '["sh", "-c", "uvicorn main:app --reload --host 0.0.0.0"]'
+  image: "pyrstatsdockerhub/eval_gitlab_users"
+ 

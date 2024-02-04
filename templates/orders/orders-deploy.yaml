@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployorders1.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.labelsapp }}
+    role: deployment 
+    name: {{ .Values.deployorders1.name }}
+spec:
+  replicas: {{ .Values.deployorders1.replicas }}
+  selector:
+    matchLabels:
+      name: {{ .Values.deployorders1.podselector }}
+  template:
+    metadata:
+      name: {{ .Values.deployorders1.podselector }}
+      namespace: {{ .Values.namespace }}
+      labels:
+        name: {{ .Values.deployorders1.podselector }}
+        app: {{ .Values.labelsapp }}
+        role: Pod
+    spec:
+      containers:
+      - name: {{ .Values.deployorders1.containername }}
+        image: {{ .Values.deployorders1.image }}
+        imagePullPolicy: {{ .Values.deployorders1.imagePullPolicy }} 
+        command: {{ .Values.deployorders1.containercommand }} 
+        ports:
+        - containerPort: {{ .Values.deployorders1.containerport }}

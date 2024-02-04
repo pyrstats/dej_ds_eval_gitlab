@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.usersclusterip1.name }}
+  labels:
+   app: {{ .Values.labelsapp }}
+   role: clusterIP
+  annotations:
+   description: "This clusterIP connects the pod users to the network"
+spec:
+  selector:
+    name: {{ .Values.usersclusterip1.podselector }}
+  type: ClusterIP
+  ports:
+  - name: {{ .Values.usersclusterip1.portname }}
+    protocol: {{ .Values.usersclusterip1.protocol }}
+    port: {{ .Values.usersclusterip1.port }}
+    targetPort: {{ .Values.usersclusterip1.targetport }}
+
+

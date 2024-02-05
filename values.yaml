@@ -1,5 +1,6 @@
 # Default values for eval_gitlab_gateway_chart_helm.
 labelsapp: "gitlab-eval"
+#The namespace is defined in the command which deploy the chart helm
 namespace: ""
 ## @param deployement ingress 
 ingressgw1:
